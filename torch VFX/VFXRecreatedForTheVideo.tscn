@@ -1,0 +1,82 @@
+[gd_scene load_steps=11 format=3 uid="uid://dq7aavuncklot"]
+
+[ext_resource type="Script" path="res://torch VFX/torchlight.gd" id="1_n50o2"]
+[ext_resource type="AudioStream" uid="uid://cqlc6iivqcxh0" path="res://torch VFX/torch_fire_loop.mp3" id="2_4ksog"]
+
+[sub_resource type="Gradient" id="Gradient_btx0j"]
+offsets = PackedFloat32Array(0, 0.242105, 0.489474, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.632903, 0.399355, 0.0335881, 0.32549, 0.821794, 0.182181, 8.66354e-07, 0.290196, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ekb1j"]
+gradient = SubResource("Gradient_btx0j")
+
+[sub_resource type="Curve" id="Curve_ibtkq"]
+_data = [Vector2(0, 0.276042), 0.0, 0.0, 0, 0, Vector2(0.244479, 0.994792), 0.0, 0.0, 0, 0, Vector2(0.435331, 0.588542), 0.0, 0.0, 0, 0, Vector2(1, 0.270833), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_1ccy2"]
+curve = SubResource("Curve_ibtkq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0nosf"]
+lifetime_randomness = 0.09
+emission_shape = 1
+emission_sphere_radius = 0.19
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 4.3, 0)
+initial_velocity_min = -0.22
+initial_velocity_max = 0.25
+radial_accel_min = -2.0
+radial_accel_max = 2.0
+angle_min = -720.0
+angle_max = 720.0
+scale_min = 0.75
+scale_max = 1.25
+scale_curve = SubResource("CurveTexture_1ccy2")
+color = Color(1, 1, 1, 0.27451)
+color_ramp = SubResource("GradientTexture1D_ekb1j")
+hue_variation_min = -0.06
+hue_variation_max = 0.06
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3j6pf"]
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_enabled = true
+proximity_fade_distance = 0.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_607rf"]
+material = SubResource("StandardMaterial3D_3j6pf")
+radial_segments = 4
+rings = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g04vg"]
+frequency = 0.2308
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+amount = 16
+preprocess = 1.0
+explosiveness = 0.1
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_0nosf")
+draw_pass_1 = SubResource("SphereMesh_607rf")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." node_paths=PackedStringArray("audio_stream_player_3d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09279, 0)
+shadow_enabled = true
+omni_range = 7.643
+script = ExtResource("1_n50o2")
+noise = SubResource("FastNoiseLite_g04vg")
+audio_stream_player_3d = NodePath("../AudioStreamPlayer3D")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02879, 0)
+stream = ExtResource("2_4ksog")
+autoplay = true

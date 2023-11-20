@@ -4,19 +4,6 @@
 [ext_resource type="Script" path="res://torch VFX/torchlight.gd" id="2_jmu0o"]
 [ext_resource type="AudioStream" uid="uid://cqlc6iivqcxh0" path="res://torch VFX/torch_fire_loop.mp3" id="3_73qxx"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8oum"]
-albedo_color = Color(0.4, 0.439216, 0.458824, 1)
-metallic = 0.17
-roughness = 0.7
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ypw5c"]
-albedo_color = Color(0.141176, 0.172549, 0.207843, 1)
-distance_fade_min_distance = 31.7
-distance_fade_max_distance = 13.55
-
-[sub_resource type="BoxMesh" id="BoxMesh_1lhyi"]
-material = SubResource("StandardMaterial3D_ypw5c")
-
 [sub_resource type="Gradient" id="Gradient_legtt"]
 offsets = PackedFloat32Array(0.124561, 0.264912, 0.392982, 0.561404, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.993563, 0.701774, 0.340076, 1, 0.68, 0.1802, 0.0136, 0.709804, 0.446059, 0.175189, 0.0841367, 0.662813, 0, 0, 0, 0)
@@ -260,28 +247,21 @@ distance_fade_max_distance = 13.55
 [sub_resource type="BoxMesh" id="BoxMesh_60bww"]
 material = SubResource("StandardMaterial3D_6asn3")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ypw5c"]
+albedo_color = Color(0.141176, 0.172549, 0.207843, 1)
+distance_fade_min_distance = 31.7
+distance_fade_max_distance = 13.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_1lhyi"]
+material = SubResource("StandardMaterial3D_ypw5c")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8oum"]
+albedo_color = Color(0.4, 0.439216, 0.458824, 1)
+metallic = 0.17
+roughness = 0.7
+
 [node name="World" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.709935, 0)
-
-[node name="TorchMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.571, 0, 1.71167e-07, 0, 0.571, 0, -1.71167e-07, 0, 0.571, -0.0343991, -0.160167, 0.0077457)
-mesh = ExtResource("1_d8i0i")
-surface_material_override/0 = SubResource("StandardMaterial3D_c8oum")
-
-[node name="Stick2" type="MeshInstance3D" parent="TorchMesh"]
-transform = Transform3D(-0.185073, 0.0451434, -0.678039, -0.110411, 0.036585, 1.11768, 0.0501196, 0.247292, -0.0415748, 0.15093, 1.54714, 0.22947)
-mesh = SubResource("BoxMesh_1lhyi")
-skeleton = NodePath("../..")
-
-[node name="Stick3" type="MeshInstance3D" parent="TorchMesh"]
-transform = Transform3D(0.0975592, 0.171098, -1.10053, -0.211852, 0.0761396, -0.51458, -0.00201738, 0.278537, 0.816692, -0.0102555, 1.3082, 0.0543669)
-mesh = SubResource("BoxMesh_1lhyi")
-skeleton = NodePath("../..")
-
-[node name="Stick4" type="MeshInstance3D" parent="TorchMesh"]
-transform = Transform3D(0.185801, -0.0836731, -0.806193, -0.010038, -0.312846, 0.526519, -0.140643, -0.0882102, -1.10263, -0.0102555, 1.3082, 0.0543669)
-mesh = SubResource("BoxMesh_1lhyi")
-skeleton = NodePath("../..")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.0343991, 0.554933, 0.0077457)
@@ -294,8 +274,8 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_ob3e1")
 draw_pass_1 = SubResource("SphereMesh_g7ox3")
 
-[node name="Light" type="OmniLight3D" parent="."]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.0338056, 1.50158, 0.00758669)
+[node name="Light" type="OmniLight3D" parent="." node_paths=PackedStringArray("audio_stream_player_3d")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.0338056, 1.62503, 0.00758669)
 light_color = Color(1, 0.419608, 0.184314, 1)
 light_energy = 19.24
 light_size = 0.013
@@ -310,6 +290,7 @@ omni_attenuation = 2.07053
 script = ExtResource("2_jmu0o")
 noise = SubResource("FastNoiseLite_ud4lv")
 radius = 0.15
+audio_stream_player_3d = NodePath("../AudioStreamPlayer3D")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_73qxx")
@@ -499,5 +480,26 @@ skeleton = NodePath("../../..")
 
 [node name="Rock18" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
 transform = Transform3D(-0.794314, 2.20865, 1.86104, -1.17019, -2.33409, 1.58789, 2.84004, -0.343994, 1.17477, -2.35696, -1.26688, -12.8979)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="TorchMesh" type="MeshInstance3D" parent="PresentationOnly"]
+transform = Transform3D(0.571, 0, 1.71167e-07, 0, 0.571, 0, -1.71167e-07, 0, 0.571, -0.0343991, -0.160167, 0.0077457)
+mesh = ExtResource("1_d8i0i")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_c8oum")
+
+[node name="Stick2" type="MeshInstance3D" parent="PresentationOnly/TorchMesh"]
+transform = Transform3D(-0.185073, 0.0451434, -0.678039, -0.110411, 0.036585, 1.11768, 0.0501196, 0.247292, -0.0415748, 0.15093, 1.54714, 0.22947)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Stick3" type="MeshInstance3D" parent="PresentationOnly/TorchMesh"]
+transform = Transform3D(0.0975592, 0.171098, -1.10053, -0.211852, 0.0761396, -0.51458, -0.00201738, 0.278537, 0.816692, -0.0102555, 1.3082, 0.0543669)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Stick4" type="MeshInstance3D" parent="PresentationOnly/TorchMesh"]
+transform = Transform3D(0.185801, -0.0836731, -0.806193, -0.010038, -0.312846, 0.526519, -0.140643, -0.0882102, -1.10263, -0.0102555, 1.3082, 0.0543669)
 mesh = SubResource("BoxMesh_1lhyi")
 skeleton = NodePath("../../..")
