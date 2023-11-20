@@ -1,0 +1,503 @@
+[gd_scene load_steps=27 format=3 uid="uid://62mjgrjxk3of"]
+
+[ext_resource type="ArrayMesh" uid="uid://cou565kcb5s5" path="res://torch VFX/torch_mesh.obj" id="1_d8i0i"]
+[ext_resource type="Script" path="res://torch VFX/torchlight.gd" id="2_jmu0o"]
+[ext_resource type="AudioStream" uid="uid://cqlc6iivqcxh0" path="res://torch VFX/torch_fire_loop.mp3" id="3_73qxx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8oum"]
+albedo_color = Color(0.4, 0.439216, 0.458824, 1)
+metallic = 0.17
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ypw5c"]
+albedo_color = Color(0.141176, 0.172549, 0.207843, 1)
+distance_fade_min_distance = 31.7
+distance_fade_max_distance = 13.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_1lhyi"]
+material = SubResource("StandardMaterial3D_ypw5c")
+
+[sub_resource type="Gradient" id="Gradient_legtt"]
+offsets = PackedFloat32Array(0.124561, 0.264912, 0.392982, 0.561404, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.993563, 0.701774, 0.340076, 1, 0.68, 0.1802, 0.0136, 0.709804, 0.446059, 0.175189, 0.0841367, 0.662813, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1ycis"]
+gradient = SubResource("Gradient_legtt")
+
+[sub_resource type="Curve" id="Curve_0n58q"]
+_data = [Vector2(0, 0.338542), 0.0, 0.0333539, 0, 0, Vector2(0.156151, 0.692708), 0.0, 0.0, 0, 0, Vector2(0.298107, 0.484375), 0.122299, 0.122299, 0, 0, Vector2(0.772871, 0.239583), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_gx6bs"]
+curve = SubResource("Curve_0n58q")
+
+[sub_resource type="Curve" id="Curve_ht4pt"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_lk3pq"]
+curve = SubResource("Curve_ht4pt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ob3e1"]
+lifetime_randomness = 0.29
+emission_shape = 1
+emission_sphere_radius = 0.12
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 3.72, 0)
+initial_velocity_min = 0.05
+initial_velocity_max = 0.28
+radial_accel_min = -2.0
+radial_accel_max = 2.0
+angle_min = -720.0
+angle_max = 720.0
+scale_min = 0.75
+scale_max = 1.25
+scale_curve = SubResource("CurveTexture_gx6bs")
+color = Color(0.858824, 0.788235, 0.752941, 0.737255)
+color_ramp = SubResource("GradientTexture1D_1ycis")
+hue_variation_min = -0.06
+hue_variation_max = 0.06
+turbulence_noise_strength = 3.6
+turbulence_noise_scale = 4.4
+turbulence_noise_speed_random = 0.1
+turbulence_influence_min = 0.03
+turbulence_influence_max = 0.13
+turbulence_initial_displacement_min = -0.1
+turbulence_initial_displacement_max = 0.1
+turbulence_influence_over_life = SubResource("CurveTexture_lk3pq")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2pst1"]
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_enabled = true
+proximity_fade_distance = 0.15
+
+[sub_resource type="SphereMesh" id="SphereMesh_g7ox3"]
+material = SubResource("StandardMaterial3D_2pst1")
+radial_segments = 4
+rings = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ud4lv"]
+noise_type = 0
+frequency = 0.8601
+fractal_octaves = 4
+fractal_lacunarity = 2.215
+domain_warp_type = 1
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1gwtx"]
+sky_top_color = Color(0.00392157, 0.0352941, 0.0941176, 1)
+sky_horizon_color = Color(0.156863, 0.34902, 0.47451, 1)
+sky_curve = 0.0642733
+ground_bottom_color = Color(0.132813, 0.105469, 0.0976563, 1)
+ground_horizon_color = Color(0.156863, 0.34902, 0.47451, 1)
+ground_curve = 0.0151571
+
+[sub_resource type="Sky" id="Sky_221b3"]
+sky_material = SubResource("ProceduralSkyMaterial_1gwtx")
+
+[sub_resource type="Environment" id="Environment_nyfcq"]
+background_mode = 2
+sky = SubResource("Sky_221b3")
+tonemap_mode = 2
+ssao_enabled = true
+ssao_intensity = 4.09
+ssao_power = 2.89781
+ssao_sharpness = 0.73
+ssao_light_affect = 0.61
+ssao_ao_channel_affect = 1.0
+glow_enabled = true
+glow_intensity = 0.07
+glow_strength = 1.49
+glow_blend_mode = 4
+glow_hdr_threshold = 3.69
+glow_hdr_scale = 4.0
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 0.0
+fog_density = 0.0
+volumetric_fog_albedo = Color(0.682353, 0.682353, 0.682353, 1)
+volumetric_fog_length = 34.91
+volumetric_fog_ambient_inject = 2.1
+adjustment_brightness = 1.1
+adjustment_saturation = 0.8
+
+[sub_resource type="Animation" id="Animation_kx2ao"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.184446, -1.54169e-09, 7.54736e-09)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D:fov")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+
+[sub_resource type="Animation" id="Animation_hds1m"]
+resource_name = "spin"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 8, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.035, 0), Vector3(0, 1.643, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = false
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.2, 8.2, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.184446, -1.54169e-09, 7.54736e-09), Vector3(-0.106465, 0, 0), Vector3(-0.563741, 0, 0), Vector3(-0.184446, -1.54169e-09, 7.54736e-09)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D:fov")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 8.6, 12),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [75.0, 50.0, 75.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nyw53"]
+_data = {
+"RESET": SubResource("Animation_kx2ao"),
+"spin": SubResource("Animation_hds1m")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l1bva"]
+albedo_color = Color(0.243137, 0.207843, 0.180392, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 48.41
+distance_fade_max_distance = 20.23
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8s01h"]
+material = SubResource("StandardMaterial3D_l1bva")
+top_radius = 200.0
+bottom_radius = 200.0
+height = 9.96
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6asn3"]
+albedo_color = Color(0.431373, 0.282353, 0.203922, 1)
+distance_fade_min_distance = 31.7
+distance_fade_max_distance = 13.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_60bww"]
+material = SubResource("StandardMaterial3D_6asn3")
+
+[node name="World" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.709935, 0)
+
+[node name="TorchMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.571, 0, 1.71167e-07, 0, 0.571, 0, -1.71167e-07, 0, 0.571, -0.0343991, -0.160167, 0.0077457)
+mesh = ExtResource("1_d8i0i")
+surface_material_override/0 = SubResource("StandardMaterial3D_c8oum")
+
+[node name="Stick2" type="MeshInstance3D" parent="TorchMesh"]
+transform = Transform3D(-0.185073, 0.0451434, -0.678039, -0.110411, 0.036585, 1.11768, 0.0501196, 0.247292, -0.0415748, 0.15093, 1.54714, 0.22947)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../..")
+
+[node name="Stick3" type="MeshInstance3D" parent="TorchMesh"]
+transform = Transform3D(0.0975592, 0.171098, -1.10053, -0.211852, 0.0761396, -0.51458, -0.00201738, 0.278537, 0.816692, -0.0102555, 1.3082, 0.0543669)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../..")
+
+[node name="Stick4" type="MeshInstance3D" parent="TorchMesh"]
+transform = Transform3D(0.185801, -0.0836731, -0.806193, -0.010038, -0.312846, 0.526519, -0.140643, -0.0882102, -1.10263, -0.0102555, 1.3082, 0.0543669)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.0343991, 0.554933, 0.0077457)
+amount = 32
+lifetime = 1.15
+preprocess = 1.0
+explosiveness = 0.1
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ob3e1")
+draw_pass_1 = SubResource("SphereMesh_g7ox3")
+
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.0338056, 1.50158, 0.00758669)
+light_color = Color(1, 0.419608, 0.184314, 1)
+light_energy = 19.24
+light_size = 0.013
+shadow_enabled = true
+shadow_bias = 0.034
+shadow_normal_bias = 0.33
+shadow_blur = 0.722
+distance_fade_begin = 60.0
+distance_fade_shadow = 30.0
+omni_range = 35.0
+omni_attenuation = 2.07053
+script = ExtResource("2_jmu0o")
+noise = SubResource("FastNoiseLite_ud4lv")
+radius = 0.15
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_73qxx")
+volume_db = -5.0
+autoplay = true
+
+[node name="PresentationOnly" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="PresentationOnly"]
+environment = SubResource("Environment_nyfcq")
+
+[node name="CameraPivot" type="Node3D" parent="PresentationOnly"]
+
+[node name="Camera3D" type="Camera3D" parent="PresentationOnly/CameraPivot"]
+transform = Transform3D(1, -7.26461e-09, -1.51554e-09, 7.41934e-09, 0.983038, 0.183402, 1.57489e-10, -0.183402, 0.983038, 0, 1.421, 4.629)
+far = 500.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="PresentationOnly"]
+transform = Transform3D(-0.891441, -0.263927, 0.368341, -0.0391835, 0.854723, 0.517604, -0.451439, 0.446981, -0.772277, 3.34077, 3.07528, 0)
+light_color = Color(0.913725, 1, 1, 1)
+light_energy = 0.225
+light_volumetric_fog_energy = 0.0
+light_angular_distance = 4.0
+shadow_enabled = true
+shadow_normal_bias = 0.0
+shadow_opacity = 0.74
+shadow_blur = 1.345
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PresentationOnly"]
+root_node = NodePath("../CameraPivot")
+autoplay = "spin"
+libraries = {
+"": SubResource("AnimationLibrary_nyw53")
+}
+
+[node name="EnvironmentMeshes" type="Node3D" parent="PresentationOnly"]
+
+[node name="GroundMesh" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.571, 0, 1.71167e-07, 0, 0.571, 0, -1.71167e-07, 0, 0.571, -0.0343991, -3.56405, 0.0077457)
+mesh = SubResource("CylinderMesh_8s01h")
+skeleton = NodePath("../../..")
+
+[node name="Stick1" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.0122921, -0.0635399, 0.953319, -0.0176273, 0.17932, 0.3288, -0.16073, -0.0148067, -0.108966, -0.834932, -0.564918, -1.86285)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Stick8" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.153119, 0.00141885, 0.727925, -0.0428921, 0.205479, 0.182909, -0.151871, -0.0566016, 0.682252, -0.415402, -0.654484, -2.04249)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Stick7" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.15633, 0.0464796, 0.107746, -0.0292333, 0.170436, -0.417885, -0.031659, 0.072136, 0.917912, -0.321964, -0.430546, -1.63569)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Stick5" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.0827246, 0.00307263, 0.923086, 0.0138564, 0.190342, 0.0141166, -0.181291, 0.0131462, -0.420133, -0.807813, -0.612287, -1.50871)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Stick6" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.105245, -0.0567961, 0.634934, 0.0420632, 0.157435, 0.450356, -0.131589, 0.0957503, -0.36386, -0.775001, -0.333558, -1.74493)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Stick9" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.120975, 0.0923601, -0.418543, -0.05285, 0.142199, 0.554422, 0.0853056, -0.0428814, 0.937032, -0.100576, -0.377371, -2.01809)
+mesh = SubResource("BoxMesh_60bww")
+skeleton = NodePath("../../..")
+
+[node name="Rock" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.177877, 0.094684, -0.92837, -0.288932, 0.833029, 0.0536822, 0.967682, 0.231323, 0.18668, 2.74729, -1.14916, 2.94964)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock2" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(1.12014, 0.483729, -0.275729, -0.345925, 0.855547, 0.604102, 0.576237, -0.426713, 0.898637, 3.61317, -1.06603, 2.70024)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock3" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.42008, 0.496982, -0.366269, 0.466533, 1.51086, 0.122151, 0.451382, 0.00197097, -1.27856, 3.41917, -1.44502, 3.27745)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock4" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.907465, 0.480292, 0.506076, -0.370194, -0.364715, 0.979558, 0.694985, -0.821404, -0.139025, -2.25707, -0.986293, -3.36913)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock5" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(1.30673, -0.64146, 0.130939, -0.773094, -0.961949, 0.51994, -0.193293, -0.489091, -1.19435, -1.89152, -1.03363, -4.38033)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock6" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.795524, 1.62505, 0.351573, 0.404373, -0.258095, 1.51069, 1.59704, 0.874827, -0.207382, -0.547501, -1.25712, -3.9837)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock7" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.880466, 0.609911, -0.359651, 0.419401, 0.0790439, 1.03781, 0.701729, -0.812504, -0.169012, -6.85847, -1.12048, 0.824841)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock19" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.898444, 0.600513, -0.33988, 0.592298, -0.187756, 0.944938, 0.534343, -0.801582, -0.475958, 0.0975423, -1.35263, 1.49167)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock20" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.0435936, 0.850604, 0.610617, 0.612444, -0.497671, 0.78709, 1.03274, 0.259227, -0.492544, 0.357244, -1.35263, 1.54339)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock21" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.0435936, 0.850604, 0.610617, 0.612444, -0.497671, 0.78709, 1.03274, 0.259227, -0.492544, 2.68809, -1.42624, -2.19115)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock22" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.0435936, 0.850604, 0.610617, 1.0254, -0.317863, 0.463977, 0.624653, 0.462427, -0.804261, -4.6148, -1.25867, -2.0544)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock23" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.446182, -0.943663, 0.0747332, 1.0254, -0.317863, 0.463977, -0.439333, 0.216483, 1.00703, -7.82334, -1.25867, 8.06216)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock24" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.449525, 0.194621, 1.00849, 1.11411, 0.0919826, 0.403739, -0.0150521, 0.996024, -0.234341, -7.10568, -1.3901, 9.48433)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock8" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(1.14129, 0.790588, -0.466192, 0.543641, 0.102459, 1.34525, 0.909605, -1.05319, -0.219078, -1.40539, -1.12048, 6.75794)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock9" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.24937, -0.786688, 0.0599819, -0.192772, 0.129032, -1.42248, 0.909605, -1.05319, -0.219078, 7.39436, -1.12048, -7.36358)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock10" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.35139, -0.965953, 0.722541, -0.796071, -0.212649, -1.6119, 1.12854, -1.3067, -0.27181, -9.61674, -1.12048, -5.47413)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock11" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.00016, 0.731331, 0.307842, -0.561068, -0.149874, -1.13606, -0.7345, -0.881363, 0.448623, -9.10035, -1.12048, -6.41026)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock12" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(0.386505, 0.943703, -0.219109, 0.419401, 0.0790439, 1.03781, 1.05748, -0.376271, -0.331519, 7.99024, -1.30988, -0.798266)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock13" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(1.10622, -0.217936, -0.362715, 0.432338, 0.144479, 1.02481, -0.18136, -0.984902, 0.230594, -6.9335, -1.30988, 1.53812)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock14" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.06784, 0.614155, -1.0331, -1.00466, 0.424877, 1.18879, 0.873251, 1.23982, 0.104368, 11.0567, -1.53633, 1.66208)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock15" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.187673, 1.76806, 0.179792, -0.297801, -0.192476, 1.83099, 2.14522, 0.127957, 0.269907, 11.69, -0.602771, 2.69378)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock16" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-1.07419, -1.89374, -1.25182, -1.13926, -1.02091, 1.80433, -2.0737, 1.54185, -0.342812, 10.3017, -0.982221, 4.07198)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock17" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(1.08059, -1.37897, 0.731717, -0.801001, 0.396665, 1.67844, -1.70781, -1.05857, -0.324242, -3.9537, -0.738291, -11.6693)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
+
+[node name="Rock18" type="MeshInstance3D" parent="PresentationOnly/EnvironmentMeshes"]
+transform = Transform3D(-0.794314, 2.20865, 1.86104, -1.17019, -2.33409, 1.58789, 2.84004, -0.343994, 1.17477, -2.35696, -1.26688, -12.8979)
+mesh = SubResource("BoxMesh_1lhyi")
+skeleton = NodePath("../../..")
